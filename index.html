@@ -3,84 +3,301 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gradient Background Website</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>Neon Gradient Experience</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0033 25%, #000428 50%, #004e92 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    .neon-title {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: bold;
+      text-align: center;
+      background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00, #ff00ff);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 3s ease infinite, neonGlow 2s ease-in-out infinite alternate;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 2rem;
+    }
+
+    .neon-subtitle {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      background: linear-gradient(90deg, #00ff88, #00ffff, #ff00ff);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 4s ease infinite;
+      text-align: center;
+      margin-bottom: 3rem;
+      opacity: 0.9;
+    }
+
+    .neon-button {
+      padding: 1.2rem 3rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff);
+      border: none;
+      border-radius: 50px;
+      color: white;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(255, 0, 110, 0.5),
+                  0 0 40px rgba(131, 56, 236, 0.3),
+                  inset 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .neon-button:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 5px 30px rgba(255, 0, 110, 0.7),
+                  0 0 60px rgba(131, 56, 236, 0.5),
+                  inset 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+
+    .neon-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .neon-button:hover::before {
+      left: 100%;
+    }
+
+    .neon-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      width: 100%;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+
+    .neon-card {
+      background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+      border: 2px solid;
+      border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff) 1;
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .neon-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5);
+      border-radius: 20px;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .neon-card:hover::before {
+      opacity: 1;
+    }
+
+    .neon-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 40px rgba(255, 0, 255, 0.4);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ff00ff, #00ffff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .card-text {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
+    }
+
+    .floating-orbs {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.6;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .orb1 {
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(45deg, #ff00ff, #8338ec);
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .orb2 {
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(45deg, #00ffff, #3a86ff);
+      top: 60%;
+      right: 10%;
+      animation-delay: 5s;
+    }
+
+    .orb3 {
+      width: 250px;
+      height: 250px;
+      background: linear-gradient(45deg, #ffff00, #ff006e);
+      bottom: 10%;
+      left: 50%;
+      animation-delay: 10s;
+    }
+
+    .neon-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(255, 0, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridMove 10s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes neonGlow {
+      from {
+        text-shadow: 0 0 10px #ff00ff,
+                     0 0 20px #ff00ff,
+                     0 0 30px #ff00ff,
+                     0 0 40px #8338ec;
+      }
+      to {
+        text-shadow: 0 0 20px #00ffff,
+                     0 0 30px #00ffff,
+                     0 0 40px #00ffff,
+                     0 0 50px #3a86ff;
+      }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(100px, -100px) scale(1.1); }
+      50% { transform: translate(-100px, 100px) scale(0.9); }
+      75% { transform: translate(50px, 50px) scale(1.05); }
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    @media (max-width: 768px) {
+      .neon-cards {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+      
+      .neon-button {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav id="navbar">
-    <div class="logo">Brand</div>
-    <ul class="nav-links">
-      <li><a href="#home" class="active">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <div class="hamburger">
-      <i class="fas fa-bars"></i>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <main>
-    <section id="home" class="hero">
-      <h1>SpeedsTer saytiga xush kelibsiz!</h1>
-      <p>Qiziqarli ma`lumotlarni o'rganamizmi?</p>
-      <button class="btn">Boshlash</button>
-    </section>
-
-    <section id="about" class="section">
-      <h2>About Us</h2>
-      <p>We are a team of passionate individuals dedicated to creating beautiful websites.</p>
-    </section>
-
-    <section id="services" class="section">
-      <h2>Our Services</h2>
-      <div class="services-grid">
-        <div class="service-card">
-          <i class="fas fa-laptop-code"></i>
-          <h3>Web Development</h3>
-          <p>Custom websites built with the latest technologies.</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-mobile-alt"></i>
-          <h3>Mobile Apps</h3>
-          <p>Beautiful and functional mobile applications.</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-paint-brush"></i>
-          <h3>UI/UX Design</h3>
-          <p>User-centered design that delights.</p>
-        </div>
+  <div class="floating-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+  
+  <div class="neon-grid"></div>
+  
+  <div class="container">
+    <h1 class="neon-title">Neon Dreams</h1>
+    <p class="neon-subtitle">Experience the future of web design</p>
+    
+    <button class="neon-button" onclick="this.style.animation='pulse 0.5s'">
+      Enter the Matrix
+    </button>
+    
+    <div class="neon-cards">
+      <div class="neon-card">
+        <h3 class="card-title">Quantum Design</h3>
+        <p class="card-text">Cutting-edge gradients that push the boundaries of visual aesthetics and create immersive experiences.</p>
       </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer id="main-footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>Contact Us</h3>
-        <p>Email: info@example.com</p>
-        <p>Phone: (123) 456-7890</p>
+      
+      <div class="neon-card">
+        <h3 class="card-title">Neon Revolution</h3>
+        <p class="card-text">Vibrant colors and glowing effects that bring your digital vision to life with stunning visual impact.</p>
       </div>
-      <div class="footer-section">
-        <h3>Follow Us</h3>
-        <div class="social-links">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-linkedin"></i></a>
-        </div>
+      
+      <div class="neon-card">
+        <h3 class="card-title">Future Forward</h3>
+        <p class="card-text">Next-generation web experiences that blend art and technology in perfect harmony.</p>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2023 Your Company. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
+  </div>
 </body>
 </html>
